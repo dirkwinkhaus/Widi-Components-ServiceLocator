@@ -106,6 +106,40 @@ class ServiceLocator implements ServiceLocatorInterface
     public function set($serviceKey, $factoryOrInvokable, array $options = [])
     {
 
+        return $this->setService($serviceKey, $factoryOrInvokable, $options);
+    }
+
+
+    /**
+     * @param string $serviceKey
+     * @param mixed  $instance
+     *
+     * @return ServiceLocator
+     */
+    public function setInstance($serviceKey, $instance)
+    {
+
+        return $this->setService($serviceKey, null, [], $instance);
+    }
+
+
+    /**
+     * @param string $serviceKey
+     * @param string $factoryOrInvokable
+     * @param array  $options
+     * @param null   $instance
+     *
+     * @return $this
+     * @throws ServiceKeyAlreadyInUseException
+     * @throws WrongParameterException
+     */
+    protected function setService(
+        $serviceKey,
+        $factoryOrInvokable,
+        array $options = [],
+        $instance = null
+    ) {
+
         if ($this->has($serviceKey)) {
             throw new ServiceKeyAlreadyInUseException($serviceKey);
         }
@@ -116,7 +150,7 @@ class ServiceLocator implements ServiceLocatorInterface
 
         $this->services[$serviceKey] = [
             self::INSTANCE         => $factoryOrInvokable,
-            self::CREATED_INSTANCE => null,
+            self::CREATED_INSTANCE => $instance,
             self::OPTIONS          => $options,
         ];
 
