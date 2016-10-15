@@ -7,14 +7,16 @@ You can simple create an instance of the service loator or create a wrapper to u
 ### Code Sample
 ```
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use Widi\Components\ServiceLocator\ServiceLocator;
 
 $services = [
     InvokableService::class => [
-        'service' => InvokableService::class,
+        'instance' => InvokableService::class,
     ],
     AnotherInvokableService::class => [
-        'service' => InvokableService::class,
+        'instance' => InvokableService::class,
         'options' => [
             'factory'   => false,
             'shared'    => false,
@@ -22,7 +24,7 @@ $services = [
         ],
     ],
     FactoryService::class   => [
-        'service' => ServiceFactory::class,
+        'instance' => ServiceFactory::class,
         'options' => [
             'factory'   => true,
             'parameter' => [],
