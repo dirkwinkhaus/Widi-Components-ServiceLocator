@@ -144,10 +144,10 @@ class ServiceLocatorTest extends TestCase
         $this->serviceLocator->clear();
         $this->serviceLocator->setArray([
             Service::class => [
-                'service' => Service::class,
+                'instance' => Service::class,
             ],
             'nonShared' => [
-                'service' => Service::class,
+                'instance' => Service::class,
                 'options' => [
                     'factory'   => false,
                     'shared'    => false,
@@ -155,7 +155,7 @@ class ServiceLocatorTest extends TestCase
                 ],
             ],
             'Factory'   => [
-                'service' => Factory::class,
+                'instance' => Factory::class,
                 'options' => [
                     'factory'   => true,
                     'parameter' => [],
@@ -239,7 +239,7 @@ class ServiceLocatorTest extends TestCase
 
         $this->serviceLocator->setArray(
             [
-                'service' => [],
+                'instance' => [],
             ]
         );
 

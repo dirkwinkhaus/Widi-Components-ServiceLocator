@@ -25,12 +25,12 @@ class ServiceLocator implements ServiceLocatorInterface
     /**
      * @var string
      */
-    const INSTANCE = 'instance';
+    const CREATED_INSTANCE = 'created_instance';
 
     /**
      * @var string
      */
-    const SERVICE = 'service';
+    const INSTANCE = 'instance';
 
     /**
      * @var string
@@ -51,6 +51,18 @@ class ServiceLocator implements ServiceLocatorInterface
      * @var array
      */
     protected $services;
+
+
+    /**
+     * ServiceLocator constructor.
+     *
+     * @param array $services
+     */
+    public function __construct(array $services = [])
+    {
+
+        $this->setArray($services);
+    }
 
 
     /**
@@ -103,9 +115,9 @@ class ServiceLocator implements ServiceLocatorInterface
         }
 
         $this->services[$serviceKey] = [
-            self::SERVICE => $factoryOrInvokable,
-            self::INSTANCE => null,
-            self::OPTIONS => $options,
+            self::INSTANCE         => $factoryOrInvokable,
+            self::CREATED_INSTANCE => null,
+            self::OPTIONS          => $options,
         ];
 
         return $this;
@@ -124,7 +136,7 @@ class ServiceLocator implements ServiceLocatorInterface
 
         foreach ($services as $serviceKey => $serviceOptions) {
 
-            if (!isset($serviceOptions[self::SERVICE])) {
+            if (!isset($serviceOptions[self::INSTANCE])) {
                 throw new ServiceArrayBadFormatException();
             }
 
@@ -132,7 +144,7 @@ class ServiceLocator implements ServiceLocatorInterface
 
             $this->set(
                 $serviceKey,
-                $serviceOptions[self::SERVICE],
+                $serviceOptions[self::INSTANCE],
                 $options
             );
 
@@ -147,6 +159,7 @@ class ServiceLocator implements ServiceLocatorInterface
      */
     public function clear()
     {
+
         $this->services = [];
 
         return $this;
@@ -178,26 +191,26 @@ class ServiceLocator implements ServiceLocatorInterface
         );
 
         if ($isShared) {
-            if ($this->services[$serviceKey][self::INSTANCE] !== null) {
-                return $this->services[$serviceKey][self::INSTANCE];
+            if ($this->services[$serviceKey][self::CREATED_INSTANCE] !== null) {
+                return $this->services[$serviceKey][self::CREATED_INSTANCE];
             }
         }
 
         if ($isFactory) {
-            $this->services[$serviceKey][self::INSTANCE]
+            $this->services[$serviceKey][self::CREATED_INSTANCE]
                 = $this->createFromFactory(
                 $serviceInformation,
                 $parameter
             );
         } else {
-            $this->services[$serviceKey][self::INSTANCE]
+            $this->services[$serviceKey][self::CREATED_INSTANCE]
                 = $this->createFromInvokable(
                 $serviceInformation,
                 $parameter
             );
         }
 
-        return $this->services[$serviceKey][self::INSTANCE];
+        return $this->services[$serviceKey][self::CREATED_INSTANCE];
     }
 
 
@@ -215,15 +228,15 @@ class ServiceLocator implements ServiceLocatorInterface
     ) {
 
         try {
-            $factory = new $serviceInformation[self::SERVICE]();
+            $factory = new $serviceInformation[self::INSTANCE]();
         } catch (\Exception $exception) {
             throw new CreateServiceException(
-                $serviceInformation[self::SERVICE]
+                $serviceInformation[self::INSTANCE]
             );
         }
 
         if (!is_callable($factory)) {
-            throw new ServiceFactoryIsNotCallableException(self::SERVICE);
+            throw new ServiceFactoryIsNotCallableException(self::INSTANCE);
         }
 
         try {
@@ -234,7 +247,7 @@ class ServiceLocator implements ServiceLocatorInterface
             }
         } catch (\Exception $exception) {
             throw new CreateServiceException(
-                $serviceInformation[self::SERVICE]
+                $serviceInformation[self::INSTANCE]
             );
         }
     }
@@ -254,13 +267,13 @@ class ServiceLocator implements ServiceLocatorInterface
 
         try {
             if ($parameter !== []) {
-                return new $serviceInformation[self::SERVICE]($parameter);
+                return new $serviceInformation[self::INSTANCE]($parameter);
             } else {
-                return new $serviceInformation[self::SERVICE]();
+                return new $serviceInformation[self::INSTANCE]();
             }
         } catch (\Exception $exception) {
             throw new CreateServiceException(
-                $serviceInformation[self::SERVICE]
+                $serviceInformation[self::INSTANCE]
             );
         }
     }
