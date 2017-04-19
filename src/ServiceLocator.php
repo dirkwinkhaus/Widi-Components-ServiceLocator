@@ -2,6 +2,7 @@
 
 namespace Widi\Components\ServiceLocator;
 
+use Psr\Container\ContainerInterface;
 use Widi\Components\ServiceLocator\Exception\CreateServiceException;
 use Widi\Components\ServiceLocator\Exception\ServiceArrayBadFormatException;
 use Widi\Components\ServiceLocator\Exception\ServiceFactoryIsNotCallableException;
@@ -14,7 +15,7 @@ use Widi\Components\ServiceLocator\Exception\WrongParameterException;
  *
  * @package Widi\ServiceLocator
  */
-class ServiceLocator implements ServiceLocatorInterface
+class ServiceLocator implements ContainerInterface
 {
 
     /**
