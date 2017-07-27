@@ -1,6 +1,6 @@
 <?php
 
-namespace Widi\Components\Test\ServiceLocator;
+namespace Widi\Components\ServiceLocator;
 
 /**
  * Class Service

@@ -1,6 +1,6 @@
 <?php
 
-namespace Widi\Components\Test\ServiceLocator;
+namespace Widi\Components\ServiceLocator;
 
 use PHPUnit\Framework\TestCase;
 use Widi\Components\ServiceLocator\Exception\ServiceArrayBadFormatException;
@@ -8,12 +8,6 @@ use Widi\Components\ServiceLocator\Exception\ServiceFactoryIsNotCallableExceptio
 use Widi\Components\ServiceLocator\Exception\ServiceKeyAlreadyInUseException;
 use Widi\Components\ServiceLocator\Exception\ServiceNotFoundException;
 use Widi\Components\ServiceLocator\Exception\WrongParameterException;
-use Widi\Components\ServiceLocator\ServiceLocator;
-
-require_once(__DIR__ . '/../../vendor/autoload.php');
-require_once(__DIR__ . '/Factory.php');
-require_once(__DIR__ . '/FactoryParameter.php');
-require_once(__DIR__ . '/Service.php');
 
 /**
  * Class ServiceLocatorTest
@@ -112,7 +106,7 @@ class ServiceLocatorTest extends TestCase
         $service = $this->serviceLocator->get(Service::class);
 
         $this->assertInstanceOf(
-            '\Widi\Components\Test\ServiceLocator\Service',
+            '\Widi\Components\ServiceLocator\Service',
             $service
         );
 

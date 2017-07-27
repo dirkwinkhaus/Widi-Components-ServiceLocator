@@ -1,10 +1,8 @@
 <?php
 
-namespace Widi\Components\Test\ServiceLocator;
+namespace Widi\Components\ServiceLocator;
 
-use Widi\Components\ServiceLocator\ServiceLocatorInterface;
-
-require_once (__DIR__ . '/Service.php');
+use Psr\Container\ContainerInterface;
 
 /**
  * Class FactoryParameter
@@ -15,13 +13,13 @@ class FactoryParameter
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $serviceLocator
      * @param array                   $parameter
      *
      * @return Service
      */
     public function __invoke(
-        ServiceLocatorInterface $serviceLocator,
+        ContainerInterface $serviceLocator,
         array $parameter
     )
     {
